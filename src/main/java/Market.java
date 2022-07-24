@@ -2,17 +2,20 @@
 import lombok.ToString;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 
 
 @ToString
 public class Market {
-    public static HashMap<Integer, User> usersList = new HashMap<>();
-    public static HashMap<Integer, Product> productsList = new HashMap<>();
-    public static HashMap <Integer, HashSet<Integer>> userWarehouse = new HashMap<>();
-    public static HashMap <Integer, HashSet<Integer>> buyerList = new HashMap<>();
+
 
     public static void main(String[] args) {
+        HashMap<Integer, User> usersList = new HashMap<>();
+        HashMap<Integer, Product> productsList = new HashMap<>();
+        HashMap <Integer, HashSet<Integer>> userWarehouse = new HashMap<>();
+        HashMap <Integer, HashSet<Integer>> buyerList = new HashMap<>();
+
         boolean stop = false;
         int userId, productId;
         while (!stop) {
@@ -28,24 +31,35 @@ public class Market {
                     in = new Scanner(System.in);
                     userId = in.nextInt();
                     productId = in.nextInt();
-                    if (usersList.get(userId).moneyAmount >= productsList.get(productId).price) {
+                    if (usersList.containsKey(userId) & productsList.containsKey(productId)) {
+                        if (usersList.get(userId).moneyAmount >= productsList.get(productId).price) {
 
-                        usersList.get(userId).moneyAmount -= productsList.get(productId).price;
-                        if (userWarehouse.get(userId) == null) {
-                            HashSet <Integer> list = new HashSet<>();
-                            list.add( productId );
-                            userWarehouse.put(userId, list ); }
-                            else { userWarehouse.get(userId).add(productId);}
-                        if (buyerList.get(userId) == null) {
-                            HashSet <Integer> list = new HashSet<>();
-                            list.add( userId );
-                            buyerList.put(productId, list );}
-                            else {buyerList.get(productId).add(userId);}
-                        System.out.println("Success");
+                            usersList.get(userId).moneyAmount -= productsList.get(productId).price;
 
-                       }
-                        else {System.out.println("Insufficient money!");}
+                            if (userWarehouse.get(userId) == null) {
+                                HashSet<Integer> list = new HashSet<>();
+                                list.add(productId);
+                                userWarehouse.put(userId, list);
+                            } else {
+                                userWarehouse.get(userId).add(productId);
+                            }
+
+                            if (buyerList.get(userId) == null) {
+                                HashSet<Integer> list = new HashSet<>();
+                                list.add(userId);
+                                buyerList.put(productId, list);
+                            } else {
+                                buyerList.get(productId).add(userId);
+                            }
+                            System.out.println("Success");
+
+                        }
+                        else {
+                            System.out.println("Insufficient money!");
+                        }
                     }
+                    else System.out.println("Wrong input!");
+                }
                 case 4 -> {
                     System.out.print("Please, input User ID: ");
                     in = new Scanner(System.in);
@@ -80,6 +94,27 @@ public class Market {
                     Product newProduct = Product.addNewProduct(productName, productPrice);
                     productId = newProduct.hashCode();
                     productsList.put(productId, newProduct);     //Add new product to the list
+                }
+                case 8 -> {
+                    System.out.print("Please enter User's Id: ");
+                    in = new Scanner(System.in);
+                    userId = in.nextInt();
+                    if (usersList.containsKey(userId)) {
+                    usersList.remove(userId);
+                    System.out.println("Success!");}
+                    else { System.out.println("Wrong input!"); }
+                }
+                case 9 -> {
+                    System.out.print("Please enter Product's Id: ");
+                    in = new Scanner(System.in);
+                    productId = in.nextInt();
+                    if (productsList.containsKey(productId)) {
+                        productsList.remove(productId);
+                        for (Map.Entry<Integer, HashSet<Integer>> user : userWarehouse.entrySet()) {
+                        user.getValue().remove(productId);}
+                        System.out.println("Success!");}
+                    else { System.out.println("Wrong input!");
+                    }
                 }
                 case 0 -> {stop = true;
                 in.close();}

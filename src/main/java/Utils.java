@@ -12,6 +12,8 @@ public class Utils {
         System.out.println("5 - Display list of users that bought a product by product id");
         System.out.println("6 - Add new user");
         System.out.println("7 - Add new product");
+        System.out.println("8 - Delete a user");
+        System.out.println("9 - Delete a product");
         System.out.println("0 - Exit");
 
     }
