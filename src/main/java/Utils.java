@@ -1,6 +1,5 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
 
 public class Utils {
 
@@ -17,14 +16,14 @@ public class Utils {
 
     }
 
-    public static void displayUserList(ArrayList<User> usersList) {
-        for (User user : usersList) {
+    public static void displayUserList(HashMap <Integer, User> usersList) {
+        for (Map.Entry<Integer, User> user : usersList.entrySet()) {
             System.out.println(user.toString());
         }
     }
 
-    public static void displayProductList(ArrayList<Product> productList) {
-        for (Product product : productList) {
+    public static void displayProductList(HashMap <Integer, Product> productList) {
+        for (Map.Entry<Integer, Product> product : productList.entrySet()) {
             System.out.println(product.toString());
         }
     }

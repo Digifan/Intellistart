@@ -10,7 +10,7 @@ import lombok.ToString;
 
 public class User {
 
-    int id;
+    //static int id;
     String firstName, lastName;
     float moneyAmount;
 
@@ -20,7 +20,7 @@ public class User {
         newUser.setFirstName(fstName);
         newUser.setLastName(lstName);
         newUser.setMoneyAmount(moneySum);
-        newUser.setId(newUser.hashCode());
+        //newUser.setId(newUser.hashCode());
 
         return newUser;
     }

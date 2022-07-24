@@ -10,7 +10,7 @@ import lombok.ToString;
 
 public class Product {
 
-    int id;
+    //int id;
     String name;
     double price;
 
@@ -19,7 +19,7 @@ public class Product {
         Product newProduct = new Product();
         newProduct.setName(nameOfProduct);
         newProduct.setPrice(priceOfProduct);
-        newProduct.setId(newProduct.hashCode());
+        //newProduct.setId(newProduct.hashCode());
         return newProduct;
     }
 }

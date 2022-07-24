@@ -1,7 +1,5 @@
 
 import lombok.ToString;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -9,8 +7,8 @@ import java.util.Scanner;
 
 @ToString
 public class Market {
-    public static ArrayList<User> usersList = new ArrayList<>();
-    public static ArrayList<Product> productsList = new ArrayList<>();
+    public static HashMap<Integer, User> usersList = new HashMap<>();
+    public static HashMap<Integer, Product> productsList = new HashMap<>();
     public static HashMap <Integer, HashSet<Integer>> userWarehouse = new HashMap<>();
     public static HashMap <Integer, HashSet<Integer>> buyerList = new HashMap<>();
 
@@ -33,9 +31,18 @@ public class Market {
                     if (usersList.get(userId).moneyAmount >= productsList.get(productId).price) {
 
                         usersList.get(userId).moneyAmount -= productsList.get(productId).price;
-                        userWarehouse.get(userId).add( productId );
-                        buyerList.get(productId).add( userId );
+                        if (userWarehouse.get(userId) == null) {
+                            HashSet <Integer> list = new HashSet<>();
+                            list.add( productId );
+                            userWarehouse.put(userId, list ); }
+                            else { userWarehouse.get(userId).add(productId);}
+                        if (buyerList.get(userId) == null) {
+                            HashSet <Integer> list = new HashSet<>();
+                            list.add( userId );
+                            buyerList.put(productId, list );}
+                            else {buyerList.get(productId).add(userId);}
                         System.out.println("Success");
+
                        }
                         else {System.out.println("Insufficient money!");}
                     }
@@ -59,7 +66,9 @@ public class Market {
                     String [] splitFullName = fullName.split(" ");
                     System.out.println("Please enter amount of money: ");
                     float moneyTotal = in.nextFloat();
-                    usersList.add(User.addNewUser(splitFullName[0], splitFullName[1], moneyTotal)); // Add new user to the list
+                    User newUser = User.addNewUser(splitFullName[0], splitFullName[1], moneyTotal);
+                    userId = newUser.hashCode();
+                    usersList.put(userId, newUser); // Add new user to the list
                 }
                 case 7 -> {
                     System.out.println("Please enter Product Name: ");
@@ -68,7 +77,9 @@ public class Market {
                     if (productName.equals("")) {System.out.println("Wrong input!"); break; }
                     System.out.println("Please enter product price: ");
                     double productPrice = in.nextDouble();
-                    productsList.add(Product.addNewProduct(productName, productPrice));     //Add new product to the list
+                    Product newProduct = Product.addNewProduct(productName, productPrice);
+                    productId = newProduct.hashCode();
+                    productsList.put(productId, newProduct);     //Add new product to the list
                 }
                 case 0 -> {stop = true;
                 in.close();}
